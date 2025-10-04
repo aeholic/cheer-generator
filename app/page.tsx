@@ -15,11 +15,6 @@ export default function Home() {
     });
   }
 
-  // function tweetIntent() {
-  //   const encoded = encodeURIComponent(cheer);
-  //   window.open(`https://x.com/intent/post?text=${encoded}`, "_blank");
-  // }
-
   async function tweetIntent(cheer: string) {
     const encoded = encodeURIComponent(cheer);
 
@@ -81,7 +76,7 @@ export default function Home() {
   return (
     <main className="flex min-h-screen bg-[url('/bg.jpg')] bg-cover items-center justify-center bg-gray-50 p-6">
       <div className="max-w-lg w-full space-y-6 p-6 bg-white rounded-2xl shadow">
-        <h1 className="text-2xl font-bold text-center">🩵 -Karina Cheer Generator 🩵</h1>
+        <h1 className="text-2xl font-bold text-center">🩵 Karina Cheer Generator 🩵</h1>
 
         <button
           onClick={handleGenerate}
