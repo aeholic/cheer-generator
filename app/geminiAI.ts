@@ -16,7 +16,7 @@ console.log("API key exists?", !!process.env.GEMINI_API_KEY);
 
 export async function generateCheers() {
   const prompt = `
-    Write 1 short, fun, and unique cheer message (under 200 characters) 
+    Write 1 short, fun, and unique cheer message (under 225 characters) 
     for Karina who's attending as a guest at the Milan Fashion Week SS26.
     Always end with:
 

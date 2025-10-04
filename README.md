@@ -2,7 +2,7 @@
 #### Generates cheer messages for Karina at the Milan Fashion Week SS26.
 
 
-I created two versions, one with openAI and one with the Gemini API.
+I created two versions, one with **openAI** and one with the **Gemini API**.
 Since openAI is no longer free (as I found just out), the credits are 0 if I don't purchase to top up. So I added the Gemini method which provides a free tier for this testing purpose.
 
 Gemini's free tier is somewhat limited, but it's more than enough for this purpose.

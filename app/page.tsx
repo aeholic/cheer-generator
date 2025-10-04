@@ -15,9 +15,60 @@ export default function Home() {
     });
   }
 
-  function tweetIntent() {
+  // function tweetIntent() {
+  //   const encoded = encodeURIComponent(cheer);
+  //   window.open(`https://x.com/intent/post?text=${encoded}`, "_blank");
+  // }
+
+  async function tweetIntent(cheer: string) {
     const encoded = encodeURIComponent(cheer);
-    window.open(`https://x.com/intent/post?text=${encoded}`, "_blank");
+
+    // detect mobile
+    const isMobile = /iPhone|iPad|iPod|Android|webOS|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+    if (isMobile) {
+      try {
+        // Create a promise to handle the deep link attempt
+        await new Promise<void>((resolve, reject) => {
+          // Store the current page visibility state
+          const originalVisibility = document.visibilityState;
+          
+          // Set up visibility change listener to detect app switch
+          const visibilityHandler = () => {
+            if (document.visibilityState === 'hidden') {
+              // App was opened successfully
+              document.removeEventListener('visibilitychange', visibilityHandler);
+              resolve();
+            }
+          };
+          
+          // Listen for visibility changes
+          document.addEventListener('visibilitychange', visibilityHandler);
+          
+          // Try the deep link
+          window.location.href = `twitter://post?message=${encoded}`;
+          
+          // Set a reasonable timeout for the deep link attempt
+          setTimeout(() => {
+            document.removeEventListener('visibilitychange', visibilityHandler);
+            // If visibility didn't change, the app wasn't opened
+            if (document.visibilityState === originalVisibility) {
+              reject(new Error('Twitter app not available'));
+            } else {
+              resolve();
+            }
+          }, 1000);
+        });
+      } catch (error) {
+        // Ask user if they want to open in browser instead
+        if (confirm(`Looks like X/Twitter is not installed or cannot be found.\n\rWould you like to proceed with the browser instead?`)) {
+          window.open(`https://x.com/intent/post?text=${encoded}`, "_blank");
+        }
+      }
+    } else {
+      // desktop - directly open web intent
+      window.open(`https://x.com/intent/post?text=${encoded}`, "_blank");
+    }
   }
 
   async function copyToClipboard() {
@@ -53,7 +104,7 @@ export default function Home() {
 
             <div className="flex gap-2">
               <button
-                onClick={tweetIntent}
+                onClick={() => tweetIntent(cheer)}
                 className="flex-1 px-4 py-2 bg-black text-white rounded-xl hover:bg-gray-800 transition cursor-pointer"
               >
                 Post to X
